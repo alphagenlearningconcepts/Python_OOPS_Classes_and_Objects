@@ -21,7 +21,7 @@
         .yellow-bg { background-color: #FFD071; }
         .yellow-text { color: #E6B84A; }
         
-        /* Slide Visibility Animation */
+        /* Slide Visibility & Transition Animation */
         .slide { display: none; }
         .slide.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
         @keyframes fadeIn {
@@ -32,20 +32,6 @@
         .bouncy { transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .bouncy:hover { transform: scale(1.02); }
         .bouncy:active { transform: scale(0.98); }
-
-        /* Custom Decorative Underline SVG Style */
-        .squiggly-underline {
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M0,10 Q25,0 50,10 T100,10 T150,10 T200,10' fill='none' stroke='%23FFD071' stroke-width='6'/%3E%3C/svg%3E");
-            background-repeat: repeat-x;
-            background-position: bottom;
-            background-size: 100px 12px;
-            padding-bottom: 8px;
-        }
-
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #5E48C4; border-radius: 10px; }
 
         .spark-wavy-underline {
             position: relative;
@@ -63,6 +49,11 @@
             background-repeat: repeat-x;
             background-size: 18px 10px;
         }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #5E48C4; border-radius: 10px; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between select-none overflow-x-hidden">
@@ -126,13 +117,12 @@
         <div id="slide-2" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Real Life Analogy #1</span>
-             
             </div>
 
             <h2 class="text-3xl font-extrabold mb-2">
                 <span class="text-[#5E48C4]">Classroom</span> <span class="text-[#E6B84A]">Survey</span>
             </h2>
-            <p class="text-sm text-slate-600 mb-5">Answer these questions about your class to see how Python maps real life into code structures.</p>
+           
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
                 <!-- Left: Interactive Inputs with "Type here" placeholders -->
@@ -192,7 +182,6 @@
         <div id="slide-3" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Real Life Analogy #2</span>
-              
             </div>
 
             <h2 class="text-3xl font-extrabold mb-2">
@@ -222,56 +211,60 @@
             </div>
         </div>
 
-        <!-- ================= SLIDE 4: WHY USE CLASSES? ================= -->
+        <!-- ================= SLIDE 4: CORE ARCHITECTURE (WHY USE CLASSES) ================= -->
         <div id="slide-4" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Core Architecture</span>
-               
             </div>
 
             <h2 class="text-3xl font-extrabold mb-2">
                 <span class="text-[#5E48C4]">Why Use</span> <span class="text-[#E6B84A]">Classes & Objects?</span>
             </h2>
-            <p class="text-sm text-slate-600 mb-5">Key advantages of structuring software using Object-Oriented Programming:</p>
+            <p class="text-sm text-slate-600 mb-4">Click a pillar on the left to see how code is structured inside boxes on the right:</p>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#5E48C4] text-white flex items-center justify-center font-bold text-base shrink-0">
-                        <i class="fa-solid fa-cubes"></i>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-5 items-stretch flex-1">
+                <!-- Left: 4 Clickable Core Points & Next Pillar Button -->
+                <div class="md:col-span-5 flex flex-col justify-between gap-2">
+                    <div class="space-y-2">
+                        <button onclick="setCoreConcept(0)" id="core-btn-0" class="w-full text-left p-3 rounded-2xl border-2 border-[#5E48C4] bg-purple-50 text-xs font-bold text-[#5E48C4] bouncy flex items-center justify-between shadow-sm">
+                            <span>1. Organization & Modularity</span>
+                            <i class="fa-solid fa-cubes text-sm"></i>
+                        </button>
+                        <button onclick="setCoreConcept(1)" id="core-btn-1" class="w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-700 bouncy flex items-center justify-between">
+                            <span>2. Reusability</span>
+                            <i class="fa-solid fa-rotate-right text-sm"></i>
+                        </button>
+                        <button onclick="setCoreConcept(2)" id="core-btn-2" class="w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-700 bouncy flex items-center justify-between">
+                            <span>3. Customization</span>
+                            <i class="fa-solid fa-sliders text-sm"></i>
+                        </button>
+                        <button onclick="setCoreConcept(3)" id="core-btn-3" class="w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-700 bouncy flex items-center justify-between">
+                            <span>4. Clean & Maintainable Code</span>
+                            <i class="fa-solid fa-broom text-sm"></i>
+                        </button>
                     </div>
-                    <div>
-                        <h3 class="text-base font-bold text-[#5E48C4]">Organization & Modularity</h3>
-                        <p class="text-xs text-slate-700 mt-1">• Group related variables and functions into clean, organized modules instead of long messy scripts.</p>
-                    </div>
+
+                    <!-- Next Pillar Button -->
+                    <button onclick="nextCoreConcept()" class="yellow-bg hover:bg-amber-300 text-slate-900 font-bold text-xs py-3 px-4 rounded-xl bouncy flex items-center justify-center gap-2 shadow-xs mt-2">
+                        <span>Next Pillar</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
                 </div>
 
-                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#FFD071] text-slate-900 flex items-center justify-center font-bold text-base shrink-0">
-                        <i class="fa-solid fa-rotate-right"></i>
-                    </div>
+                <!-- Right: Non-Technical Box Diagrams -->
+                <div class="md:col-span-7 bg-[#F5F4FF] border-2 border-purple-100 rounded-2xl p-5 flex flex-col justify-between shadow-inner">
                     <div>
-                        <h3 class="text-base font-bold text-slate-900">Reusability</h3>
-                        <p class="text-xs text-slate-700 mt-1">• Write the class blueprint once, then create hundreds of objects without repeating identical code.</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 id="core-title" class="text-lg font-extrabold text-[#5E48C4]">1. Organization & Modularity</h3>
+                            <span id="core-badge" class="text-[10px] font-bold bg-[#5E48C4] text-white px-2.5 py-1 rounded-lg">PILLAR 1 OF 4</span>
+                        </div>
+                        <p id="core-desc" class="text-xs text-slate-700 leading-relaxed mb-4">
+                             Code gets organised into modules.
+                        </p>
                     </div>
-                </div>
 
-                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#5E48C4] text-white flex items-center justify-center font-bold text-base shrink-0">
-                        <i class="fa-solid fa-sliders"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-bold text-[#5E48C4]">Customization</h3>
-                        <p class="text-xs text-slate-700 mt-1">• Every object shares the class structure but maintains its own unique attribute values independently.</p>
-                    </div>
-                </div>
-
-                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-start gap-3">
-                    <div class="w-9 h-9 rounded-xl bg-[#FFD071] text-slate-900 flex items-center justify-center font-bold text-base shrink-0">
-                        <i class="fa-solid fa-broom"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-base font-bold text-slate-900">Clean & Maintainable Code</h3>
-                        <p class="text-xs text-slate-700 mt-1">• Modifying a feature inside the main class blueprint instantly updates all object instances across your app.</p>
+                    <!-- Interactive Diagram Box Area -->
+                    <div id="core-visual-box" class="bg-white border border-purple-200 rounded-xl p-4 min-h-[160px] flex flex-col items-center justify-center gap-2">
+                        <!-- Dynamic box content rendered via JS -->
                     </div>
                 </div>
             </div>
@@ -281,7 +274,6 @@
         <div id="slide-5" class="slide flex-col bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-2">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Live Interactive Simulator</span>
-               
             </div>
 
             <h2 class="text-2xl font-extrabold mb-1">
@@ -318,10 +310,10 @@
                     <!-- Step 3 & 4: Instantiate Objects -->
                     <div class="grid grid-cols-2 gap-1.5">
                         <button onclick="toggleBuilderStep('obj_s1')" id="btn-obj-s1" class="bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center">
-                            3. Create student1 object
+                            3. Create student1
                         </button>
                         <button onclick="toggleBuilderStep('obj_s2')" id="btn-obj-s2" class="bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center">
-                            4. Create student2 object
+                            4. Create student2
                         </button>
                     </div>
 
@@ -349,7 +341,7 @@
                         </button>
                         <!-- RUN CODE BUTTON -->
                         <button onclick="runBuilderSimulation()" class="purple-theme hover:bg-purple-700 text-white text-xs font-extrabold py-2 px-3 rounded-xl shadow-md bouncy flex items-center justify-center gap-1.5">
-                            <i class="fa-solid fa-play"></i> RUN CODE 
+                            <i class="fa-solid fa-play"></i> RUN CODE 🚀
                         </button>
                     </div>
                 </div>
@@ -392,7 +384,6 @@
         <div id="slide-6" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Hands-On Practice</span>
-                
             </div>
 
             <h2 class="text-3xl font-extrabold mb-2">
@@ -405,7 +396,7 @@
                 <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
                     <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
                     <div>
-                        <h3 class="text-base font-bold text-slate-800">1. Ball Class</h3>
+                        <h3 class="text-base font-bold text-slate-800">1. Ball Class </h3>
                         <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                             • Create a class named <code class="text-[#5E48C4] font-bold">Ball</code> with properties: <code class="font-bold">texture</code>, <code class="font-bold">size</code>, and <code class="font-bold">color</code>.<br>
                             • Instantiate two objects: <code class="font-bold">basketball</code> and <code class="font-bold">ping_pong_ball</code>.<br>
@@ -418,7 +409,7 @@
                 <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
                     <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
                     <div>
-                        <h3 class="text-base font-bold text-slate-800">2. Dessert Class Scenario </h3>
+                        <h3 class="text-base font-bold text-slate-800">2. Dessert Class </h3>
                         <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                             • Create a class named <code class="text-[#5E48C4] font-bold">Dessert</code> with properties: <code class="font-bold">flavor</code> and <code class="font-bold">main_ingredients</code>.<br>
                             • Instantiate two objects: <code class="font-bold">ice_cream</code> and <code class="font-bold">waffle</code>.<br>
@@ -431,7 +422,7 @@
                 <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
                     <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
                     <div>
-                        <h3 class="text-base font-bold text-slate-800">3. Travel Plan Scenario </h3>
+                        <h3 class="text-base font-bold text-slate-800">3. Travel Plan </h3>
                         <p class="text-xs text-slate-600 mt-1 leading-relaxed">
                             • Create a class named <code class="text-[#5E48C4] font-bold">TravelPlan</code> with properties: <code class="font-bold">chosen_attire</code>, <code class="font-bold">weather</code>, and <code class="font-bold">budget</code>.<br>
                             • Instantiate two objects: <code class="font-bold">switzerland</code> and <code class="font-bold">malaysia</code>.<br>
@@ -442,7 +433,7 @@
             </div>
 
             <div id="checklist-status" class="text-center font-bold text-xs text-[#5E48C4] hidden bg-purple-50 p-3 rounded-xl border border-purple-200">
-                 Awesome work! You completed all checklist scenarios!
+                🎉 Awesome work! You completed all checklist scenarios!
             </div>
         </div>
 
@@ -450,7 +441,6 @@
         <div id="slide-7" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Knowledge Verification</span>
-               
             </div>
 
             <h2 class="text-3xl font-extrabold mb-2">
@@ -512,10 +502,28 @@
                 </div>
             </div>
 
-           
+            <div id="quiz-status" class="text-xs font-semibold text-center text-[#5E48C4] hidden bg-purple-50 p-2.5 rounded-xl">
+                Select options above to verify your score!
+            </div>
         </div>
 
-       
+        <!-- ================= SLIDE 8: COMPLETION SLIDE ================= -->
+        <div id="slide-8" class="slide flex-col items-center justify-center text-center bg-[#5E48C4] text-white rounded-3xl p-10 md:p-16 shadow-xl w-full max-w-3xl my-auto">
+            <div class="w-20 h-20 bg-[#FFD071] text-slate-900 rounded-full flex items-center justify-center text-4xl mb-6 shadow-lg">
+                <i class="fa-solid fa-trophy"></i>
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 text-white">
+                Great Job! 🎉
+            </h1>
+            <p class="text-base text-purple-100 max-w-lg mb-8 leading-relaxed">
+                You've mastered the core concepts of Python <span class="text-[#FFD071] font-bold">Classes</span>, <span class="text-[#FFD071] font-bold">Objects</span>, and <span class="text-[#FFD071] font-bold">Attributes</span>!
+            </p>
+
+            <button onclick="jumpToSlide(1); playSound('click');" class="yellow-bg text-slate-900 font-bold px-8 py-3.5 rounded-2xl shadow-lg bouncy hover:bg-amber-300">
+                Restart Lesson <i class="fa-solid fa-rotate-right ml-2"></i>
+            </button>
+        </div>
 
     </main>
 
@@ -632,6 +640,137 @@
             }
         }
 
+        // ================= SLIDE 4 CORE ARCHITECTURE INTERACTIVE LOGIC =================
+        let currentCoreIndex = 0;
+        let isCodeSwapped = false;
+
+        const coreConcepts = [
+            {
+                title: "1. Organization & Modularity",
+                badge: "PILLAR 1 OF 4",
+                desc: "Code gets organised into modules",
+                render: () => `
+                    <div class="w-full flex flex-col items-center gap-2">
+                        <div class="bg-purple-50 border-2 border-[#5E48C4] p-3 rounded-2xl w-full text-center shadow-sm">
+                            <span class="text-[11px] font-extrabold text-[#5E48C4] uppercase block mb-2">Entire Program</span>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div class="bg-purple-200 border border-purple-400 p-2 rounded-xl text-center">
+                                    <span class="text-[10px] font-bold text-[#5E48C4]">Module 1</span>
+                                </div>
+                                <div class="bg-purple-200 border border-purple-400 p-2 rounded-xl text-center">
+                                    <span class="text-[10px] font-bold text-[#5E48C4]">Module 2</span>
+                                </div>
+                                <div class="bg-purple-200 border border-purple-400 p-2 rounded-xl text-center">
+                                    <span class="text-[10px] font-bold text-[#5E48C4]">Module 3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`
+            },
+            {
+                title: "2. Reusability",
+                badge: "PILLAR 2 OF 4",
+                desc: "One module can be used multiple times in the code.",
+                render: () => `
+                    <div class="w-full flex items-center justify-around gap-2">
+                        <!-- Single Feature Box -->
+                        <div class="bg-[#FFD071] border-2 border-amber-500 p-2.5 rounded-2xl text-center shrink-0 shadow-sm">
+                            <span class="text-[11px] font-extrabold text-slate-900 block">⚡ Module</span>
+                            <span class="text-[9px] text-slate-800 font-semibold block">(Written Once)</span>
+                        </div>
+                        
+                        <div class="flex flex-col gap-1 text-purple-600 font-bold text-sm">
+                            <i class="fa-solid fa-arrow-right"></i>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+
+                        <!-- Main Application Box -->
+                        <div class="bg-purple-50 border-2 border-[#5E48C4] p-2.5 rounded-2xl w-1/2 text-center shadow-sm">
+                            <span class="text-[10px] font-extrabold text-[#5E48C4] uppercase block mb-1.5">Application </span>
+                            <div class="space-y-1">
+                                <div class="bg-amber-100 border border-amber-300 text-[9px] font-bold text-slate-800 p-1 rounded">Used in Section A</div>
+                                <div class="bg-amber-100 border border-amber-300 text-[9px] font-bold text-slate-800 p-1 rounded">Used in Section B</div>
+                            </div>
+                        </div>
+                    </div>`
+            },
+            {
+                title: "3. Customization",
+                badge: "PILLAR 3 OF 4",
+                desc: "Features can be customized without breaking or re-writting the entire code",
+                render: () => `
+                    <div class="w-full flex items-center justify-between gap-3">
+                        <!-- Main Program Container -->
+                        <div class="bg-purple-50 border-2 border-[#5E48C4] p-3 rounded-2xl flex-1 text-center shadow-sm">
+                            <span class="text-[10px] font-extrabold text-[#5E48C4] uppercase block mb-2">Main Program Box</span>
+                            <div class="flex gap-2 justify-center">
+                                <div class="bg-purple-200 border border-purple-400 px-2.5 py-2 rounded-xl text-[10px] font-bold text-[#5E48C4]">Code 1</div>
+                                <div id="swappable-box" class="${isCodeSwapped ? 'bg-emerald-200 border-emerald-500 text-emerald-900' : 'bg-amber-200 border-amber-500 text-slate-900'} border px-2.5 py-2 rounded-xl text-[10px] font-bold transition-all">
+                                    ${isCodeSwapped ? 'Code 3 ✨' : 'Code 2'}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Isolated Swap Source Box -->
+                        <div class="flex flex-col items-center gap-1">
+                            <button onclick="toggleCodeSwap()" class="yellow-bg hover:bg-amber-300 text-slate-900 font-extrabold text-[10px] p-2 rounded-xl bouncy shadow-xs">
+                                Click to swap
+                            </button>
+                            <div class="bg-emerald-100 border border-emerald-400 p-1.5 rounded-xl text-[9px] font-bold text-emerald-900">
+                              Code 3
+                            </div>
+                        </div>
+                    </div>`
+            },
+            {
+                title: "4. Clean & Maintainable Code",
+                badge: "PILLAR 4 OF 4",
+                desc: "Neatly organized module makes debugging easy",
+                render: () => `
+                    <div class="w-full bg-purple-50 border-2 border-[#5E48C4] p-3 rounded-2xl text-center shadow-sm">
+                        <span class="text-[10px] font-extrabold text-[#5E48C4] uppercase block mb-2">✨ Application</span>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div class="bg-emerald-100 border border-emerald-300 p-2 rounded-xl text-[10px] font-bold text-emerald-900 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-check text-emerald-600"></i> Feature 1
+                            </div>
+                            <div class="bg-emerald-100 border border-emerald-300 p-2 rounded-xl text-[10px] font-bold text-emerald-900 flex items-center justify-center gap-1">
+                                <i class="fa-solid fa-check text-emerald-600"></i> Feature 2
+                            </div>
+                        </div>
+                    </div>`
+            }
+        ];
+
+        function toggleCodeSwap() {
+            playSound('click');
+            isCodeSwapped = !isCodeSwapped;
+            setCoreConcept(2);
+        }
+
+        function setCoreConcept(idx) {
+            playSound('click');
+            currentCoreIndex = idx;
+            for (let i = 0; i < 4; i++) {
+                const btn = document.getElementById(`core-btn-${i}`);
+                if (i === idx) {
+                    btn.className = "w-full text-left p-3 rounded-2xl border-2 border-[#5E48C4] bg-purple-50 text-xs font-bold text-[#5E48C4] bouncy flex items-center justify-between shadow-sm";
+                } else {
+                    btn.className = "w-full text-left p-3 rounded-2xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-700 bouncy flex items-center justify-between";
+                }
+            }
+
+            const c = coreConcepts[idx];
+            document.getElementById('core-title').innerText = c.title;
+            document.getElementById('core-badge').innerText = c.badge;
+            document.getElementById('core-desc').innerText = c.desc;
+            document.getElementById('core-visual-box').innerHTML = c.render();
+        }
+
+        function nextCoreConcept() {
+            currentCoreIndex = (currentCoreIndex + 1) % 4;
+            setCoreConcept(currentCoreIndex);
+        }
+
         // ================= SLIDE 5 BUILDER STATE & RESET LOGIC =================
         let bState = {
             classCreated: true,
@@ -662,7 +801,6 @@
         }
 
         function updateBuilderUI() {
-            // Update button styles based on active boolean state
             document.getElementById('btn-step-class').className = bState.classCreated ? "w-full text-left p-2 rounded-xl border-2 border-[#5E48C4] bg-purple-50 text-xs font-bold text-[#5E48C4] bouncy flex items-center justify-between" : "w-full text-left p-2 rounded-xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-600 bouncy flex items-center justify-between";
             document.getElementById('btn-attr-sub').className = bState.hasSubject ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-lg bouncy" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy";
             document.getElementById('btn-attr-room').className = bState.hasRoom ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-lg bouncy" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy";
@@ -809,8 +947,9 @@
             }
         }
 
-        // Initialize First View & Default Code Build
+        // Initialize First View
         updateSlideView();
+        setCoreConcept(0);
         updateBuilderUI();
         updateBuilderCode();
     </script>
