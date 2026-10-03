@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python OOPS - Classes & Objects</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts: Poppins (Alphagen Brand Spec) -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap">
+
+    <style>
+        * { font-family: 'Poppins', sans-serif; box-sizing: border-box; }
+        body { background-color: #F5F4FF; color: #1A1A1A; }
+        .purple-theme { background-color: #5E48C4; }
+        .purple-text { color: #5E48C4; }
+        .yellow-bg { background-color: #FFD071; }
+        .yellow-text { color: #E6B84A; }
+        
+        /* Slide Visibility Animation */
+        .slide { display: none; }
+        .slide.active { display: flex; animation: fadeIn 0.25s ease-in-out; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .bouncy { transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .bouncy:hover { transform: scale(1.02); }
+        .bouncy:active { transform: scale(0.98); }
+
+        /* Custom Decorative Underline SVG Style */
+        .squiggly-underline {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' preserveAspectRatio='none'%3E%3Cpath d='M0,10 Q25,0 50,10 T100,10 T150,10 T200,10' fill='none' stroke='%23FFD071' stroke-width='6'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-position: bottom;
+            background-size: 100px 12px;
+            padding-bottom: 8px;
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #5E48C4; border-radius: 10px; }
+
+        .spark-wavy-underline {
+            position: relative;
+            display: inline-block;
+            color: #5E48C4;
+        }
+        .spark-wavy-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 100%;
+            height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 4' preserveAspectRatio='none'%3E%3Cpath d='M0 2 Q 5 0, 10 2 T 20 2' fill='none' stroke='%23FFD071' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: 18px 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between select-none overflow-x-hidden">
+
+    <!-- ================= TOP NAVIGATION BAR ================= -->
+    <header class="w-full bg-white border-b border-purple-100 px-6 py-3.5 flex items-center justify-between shadow-sm z-10">
+        <!-- Brand Title & Gamepad Logo -->
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-2xl bg-[#5E48C4] flex items-center justify-center text-white text-lg shadow-sm">
+                <i class="fa-solid fa-gamepad"></i>
+            </div>
+            <div>
+                <h1 class="font-extrabold text-lg text-[#1A1A1A] leading-tight">Python OOPS</h1>
+                <p class="text-xs font-semibold text-[#5E48C4]">Python Classes & Objects</p>
+            </div>
+        </div>
+        
+        <!-- Progress Bar, Slide Indicator, Jump Menu -->
+        <div class="flex items-center gap-4">
+            <!-- Dynamic Slide Dots -->
+            <div class="hidden md:flex items-center gap-1.5" id="top-dots"></div>
+
+            <!-- Slide Counter Badge -->
+            <span id="slide-counter" class="text-xs font-bold text-[#5E48C4] bg-purple-50 px-3.5 py-1.5 rounded-full border border-purple-200 shadow-xs">
+                Slide 1 / 8
+            </span>
+
+            <!-- Jump to Slide Dropdown -->
+            <select id="slide-select" onchange="jumpToSlide(this.value)" class="bg-slate-100 text-slate-800 text-xs font-bold px-3 py-1.5 rounded-xl border border-slate-200 outline-none cursor-pointer hover:bg-slate-200 transition-colors">
+                <option value="1">1. Welcome</option>
+                <option value="2">2. Classroom Survey</option>
+                <option value="3">3. Teacher Analogy</option>
+                <option value="4">4. Why Use Classes?</option>
+                <option value="5">5. Code & Object Builder</option>
+                <option value="6">6. Practice Checklist</option>
+                <option value="7">7. Wrap-Up Quiz</option>
+                <option value="8">8. Completion</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- ================= MAIN SLIDE CONTAINER ================= -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-6 flex items-center justify-center">
+
+        <!-- ================= SLIDE 1: HOME COVER ================= -->
+        <div id="slide-1" class="slide active flex-col items-center justify-center text-center bg-white rounded-3xl p-10 md:p-16 shadow-xl border-2 border-purple-100 w-full max-w-3xl my-auto">
+            <div class="inline-block bg-purple-100 text-[#5E48C4] font-extrabold text-xs uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+                INTERACTIVE CODING LESSON
+            </div>
+            
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#1A1A1A] mb-8 leading-tight">
+                Let's learn <span class="spark-wavy-underline">Classes & Objects</span>!
+            </h1>
+
+            <button onclick="nextSlide(); playSound('click');" class="yellow-bg text-[#1A1A1A] text-lg font-bold px-9 py-4 rounded-2xl shadow-md bouncy inline-flex items-center gap-3 hover:bg-amber-300">
+                Let's Explore! <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+
+        <!-- ================= SLIDE 2: CLASSROOM SURVEY ================= -->
+        <div id="slide-2" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Real Life Analogy #1</span>
+             
+            </div>
+
+            <h2 class="text-3xl font-extrabold mb-2">
+                <span class="text-[#5E48C4]">Classroom</span> <span class="text-[#E6B84A]">Survey</span>
+            </h2>
+            <p class="text-sm text-slate-600 mb-5">Answer these questions about your class to see how Python maps real life into code structures.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+                <!-- Left: Interactive Inputs with "Type here" placeholders -->
+                <div class="bg-purple-50/70 p-5 rounded-2xl border border-purple-100 flex flex-col justify-between gap-3">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">a) What grade are you in?</label>
+                        <input type="text" placeholder="Type here" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-[#5E48C4] outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">b) How many students in your class?</label>
+                        <input type="text" placeholder="Type here" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-[#5E48C4] outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">c) Common features (uniforms, classroom, rules)?</label>
+                        <input type="text" placeholder="Type here" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-[#5E48C4] outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">d) Different features (names, hobbies, height)?</label>
+                        <input type="text" placeholder="Type here" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:border-[#5E48C4] outline-none">
+                    </div>
+                </div>
+
+                <!-- Right: OOP Mapping Panel -->
+                <div class="bg-[#EAE7FE] p-6 rounded-2xl border-l-8 border-[#5E48C4] flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold text-[#5E48C4] mb-2 flex items-center gap-2">
+                            <i class="fa-solid fa-diagram-project"></i> Python OOP Mapping
+                        </h3>
+                        <p class="text-xs text-slate-800 mb-4 leading-relaxed">
+                            Even though every classmate has unique traits, you all belong together as part of the same class structure!
+                        </p>
+
+                        <div class="space-y-2.5">
+                            <div class="bg-white p-3 rounded-xl flex items-center justify-between shadow-xs">
+                                <span class="text-xs font-bold text-slate-600">Whole Classroom</span>
+                                <span class="bg-[#5E48C4] text-white font-extrabold text-xs px-3 py-1 rounded-lg">= CLASS (Blueprint)</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl flex items-center justify-between shadow-xs">
+                                <span class="text-xs font-bold text-slate-600">Each Classmate</span>
+                                <span class="bg-[#FFD071] text-[#1A1A1A] font-extrabold text-xs px-3 py-1 rounded-lg">= OBJECT (Instance)</span>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl flex items-center justify-between shadow-xs">
+                                <span class="text-xs font-bold text-slate-600">Features & Traits</span>
+                                <span class="bg-slate-200 text-slate-800 font-extrabold text-xs px-3 py-1 rounded-lg">= ATTRIBUTES (Properties)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-3 text-xs font-semibold text-slate-700 bg-white/80 p-3 rounded-xl">
+                        💡 <b>Key Concept:</b> A class defines common features, while each object stores its own distinct values!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 3: TEACHER ANALOGY ================= -->
+        <div id="slide-3" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Real Life Analogy #2</span>
+              
+            </div>
+
+            <h2 class="text-3xl font-extrabold mb-2">
+                <span class="text-[#5E48C4]">Teacher</span> <span class="text-[#E6B84A]">Announces in Class</span>
+            </h2>
+            <p class="text-sm text-slate-600 mb-6">A teacher enters your class with an important update. How should she announce it?</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <!-- Option A -->
+                <button onclick="selectTeacherOpt('a')" id="t-opt-a" class="p-6 rounded-2xl border-2 border-slate-200 bg-white text-left bouncy transition-all flex flex-col items-center text-center">
+                    <div class="text-5xl mb-3">🚶‍♂️</div>
+                    <h3 class="text-lg font-bold text-slate-800 mb-1">Option A: Walk to Each Student</h3>
+                    <p class="text-xs text-slate-500">Walk up to every single student individually and repeat the news 30 separate times.</p>
+                </button>
+
+                <!-- Option B -->
+                <button onclick="selectTeacherOpt('b')" id="t-opt-b" class="p-6 rounded-2xl border-2 border-[#5E48C4] bg-purple-50 text-left bouncy transition-all flex flex-col items-center text-center shadow-md">
+                    <div class="text-5xl mb-3">📢</div>
+                    <h3 class="text-lg font-bold text-[#5E48C4] mb-1">Option B: Announce to Class Together</h3>
+                    <p class="text-xs text-slate-600">Announce the news once to the whole class together at the exact same time.</p>
+                </button>
+            </div>
+
+            <div id="teacher-feedback" class="bg-[#EAE7FE] border-l-6 border-[#5E48C4] p-5 rounded-2xl text-sm text-slate-800">
+                <p class="font-bold text-[#5E48C4] text-base mb-1">✅ Option B is Object-Oriented Programming!</p>
+                <p class="text-xs text-slate-700">Instead of repeating instructions for every object, we program features <b>once inside the Class</b>. All objects automatically inherit and share those capabilities!</p>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 4: WHY USE CLASSES? ================= -->
+        <div id="slide-4" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Core Architecture</span>
+               
+            </div>
+
+            <h2 class="text-3xl font-extrabold mb-2">
+                <span class="text-[#5E48C4]">Why Use</span> <span class="text-[#E6B84A]">Classes & Objects?</span>
+            </h2>
+            <p class="text-sm text-slate-600 mb-5">Key advantages of structuring software using Object-Oriented Programming:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#5E48C4] text-white flex items-center justify-center font-bold text-base shrink-0">
+                        <i class="fa-solid fa-cubes"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-[#5E48C4]">Organization & Modularity</h3>
+                        <p class="text-xs text-slate-700 mt-1">• Group related variables and functions into clean, organized modules instead of long messy scripts.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#FFD071] text-slate-900 flex items-center justify-center font-bold text-base shrink-0">
+                        <i class="fa-solid fa-rotate-right"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Reusability</h3>
+                        <p class="text-xs text-slate-700 mt-1">• Write the class blueprint once, then create hundreds of objects without repeating identical code.</p>
+                    </div>
+                </div>
+
+                <div class="bg-purple-50 p-4 rounded-2xl border border-purple-100 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#5E48C4] text-white flex items-center justify-center font-bold text-base shrink-0">
+                        <i class="fa-solid fa-sliders"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-[#5E48C4]">Customization</h3>
+                        <p class="text-xs text-slate-700 mt-1">• Every object shares the class structure but maintains its own unique attribute values independently.</p>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 p-4 rounded-2xl border border-amber-200 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-[#FFD071] text-slate-900 flex items-center justify-center font-bold text-base shrink-0">
+                        <i class="fa-solid fa-broom"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Clean & Maintainable Code</h3>
+                        <p class="text-xs text-slate-700 mt-1">• Modifying a feature inside the main class blueprint instantly updates all object instances across your app.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 5: LIVE SINGLE-SLIDE CLASS & OBJECT BUILDER ================= -->
+        <div id="slide-5" class="slide flex-col bg-white rounded-3xl p-6 md:p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Live Interactive Simulator</span>
+               
+            </div>
+
+            <h2 class="text-2xl font-extrabold mb-1">
+                <span class="text-[#5E48C4]">Build Class, Objects</span> & <span class="text-[#E6B84A]">Print Output</span>
+            </h2>
+            <p class="text-xs text-slate-600 mb-3">Click the action steps on the left to build the blueprint, instantiate objects, override attributes, and test print output!</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
+                <!-- Left Control Panel -->
+                <div class="md:col-span-5 space-y-2 flex flex-col justify-between">
+                    
+                    <!-- Step 1: Create Class -->
+                    <button onclick="toggleBuilderStep('class')" id="btn-step-class" class="w-full text-left p-2 rounded-xl border-2 border-[#5E48C4] bg-purple-50 text-xs font-bold text-[#5E48C4] bouncy flex items-center justify-between">
+                        <span>1. Create Class Classroom</span>
+                        <i class="fa-solid fa-cube text-xs"></i>
+                    </button>
+
+                    <!-- Step 2: Add Attributes -->
+                    <div class="bg-purple-50/80 p-2 rounded-xl border border-purple-100">
+                        <p class="text-[10px] font-extrabold text-[#5E48C4] uppercase tracking-wide mb-1">2. Add Class Properties</p>
+                        <div class="grid grid-cols-3 gap-1">
+                            <button onclick="toggleBuilderStep('attr_sub')" id="btn-attr-sub" class="bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy">
+                                + Subject
+                            </button>
+                            <button onclick="toggleBuilderStep('attr_room')" id="btn-attr-room" class="bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy">
+                                + Room No.
+                            </button>
+                            <button onclick="toggleBuilderStep('attr_teacher')" id="btn-attr-teacher" class="bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy">
+                                + Teacher
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 & 4: Instantiate Objects -->
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <button onclick="toggleBuilderStep('obj_s1')" id="btn-obj-s1" class="bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center">
+                            3. Create student1 object
+                        </button>
+                        <button onclick="toggleBuilderStep('obj_s2')" id="btn-obj-s2" class="bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center">
+                            4. Create student2 object
+                        </button>
+                    </div>
+
+                    <!-- Step 5: Change student1 property -->
+                    <button onclick="toggleBuilderStep('change_s1')" id="btn-change-s1" class="w-full bg-slate-200 text-slate-700 text-[11px] font-bold p-2 rounded-xl bouncy text-left flex items-center justify-between">
+                        <span>5. Set student1.subject = "Physics"</span>
+                        <i class="fa-solid fa-pen text-xs"></i>
+                    </button>
+
+                    <!-- Step 6 & 7: Print statements -->
+                    <div class="grid grid-cols-2 gap-1.5">
+                        <button onclick="toggleBuilderStep('print_s1')" id="btn-print-s1" class="bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-xl bouncy text-center">
+                            6. print(student1)
+                        </button>
+                        <button onclick="toggleBuilderStep('print_s2')" id="btn-print-s2" class="bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-xl bouncy text-center">
+                            7. print(student2)
+                        </button>
+                    </div>
+
+                    <!-- Action Buttons: Reset & Run -->
+                    <div class="grid grid-cols-2 gap-2 pt-1">
+                        <!-- RESET CODE BUTTON -->
+                        <button onclick="resetBuilderSimulation()" class="bg-rose-100 hover:bg-rose-200 text-rose-700 border border-rose-300 text-xs font-extrabold py-2 px-3 rounded-xl bouncy flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-arrow-rotate-left"></i> RESET CODE
+                        </button>
+                        <!-- RUN CODE BUTTON -->
+                        <button onclick="runBuilderSimulation()" class="purple-theme hover:bg-purple-700 text-white text-xs font-extrabold py-2 px-3 rounded-xl shadow-md bouncy flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-play"></i> RUN CODE 
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Right Editor & Terminal Output Box -->
+                <div class="md:col-span-7 bg-[#1A1A1A] rounded-2xl font-mono text-xs p-4 flex flex-col justify-between shadow-inner min-h-[310px]">
+                    <div>
+                        <!-- Header Tab Toggle -->
+                        <div class="flex items-center justify-between pb-2 mb-2 border-b border-slate-700">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                                <span id="tab-title-code" class="text-[11px] text-purple-300 font-bold ml-2">classroom_app.py</span>
+                            </div>
+                            <span id="simulator-mode-badge" class="text-[10px] bg-slate-800 text-emerald-400 font-bold px-2 py-0.5 rounded">
+                                LIVE CODE EDITOR
+                            </span>
+                        </div>
+
+                        <!-- Editor View -->
+                        <div id="builder-editor-view" class="text-slate-100 whitespace-pre-wrap leading-relaxed text-[11px] overflow-y-auto max-h-[200px]">
+                            <!-- Dynamically generated code goes here -->
+                        </div>
+
+                        <!-- Terminal Output View (Hidden until Run) -->
+                        <div id="builder-terminal-view" class="hidden bg-slate-900 p-3 rounded-xl text-emerald-400 font-mono text-xs leading-relaxed border border-slate-800 whitespace-pre-wrap mt-2">
+                            <!-- Live console output goes here -->
+                        </div>
+                    </div>
+
+                    <div class="text-[10px] text-slate-400 bg-slate-800/80 p-2 rounded-lg border border-slate-700/80 mt-2">
+                        💡 <b>Observation:</b> Class names always start with a <code class="text-yellow-300">CAPITAL LETTER</code>.<br/> <code class="text-yellow-300">student1</code> prints its overridden value ("Physics"), while <code class="text-yellow-300">student2</code> prints default ("Maths")!
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 6: PRACTICE CHECKLIST ================= -->
+        <div id="slide-6" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Hands-On Practice</span>
+                
+            </div>
+
+            <h2 class="text-3xl font-extrabold mb-2">
+                <span class="text-[#5E48C4]">IDE Practice</span> <span class="text-[#E6B84A]">Checklist</span>
+            </h2>
+            <p class="text-sm text-slate-600 mb-5">Open your Python IDE and code these three scenarios. Check off each item when finished!</p>
+
+            <div class="space-y-3.5 mb-5">
+                <!-- Task 1: Ball Class -->
+                <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
+                    <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">1. Ball Class</h3>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            • Create a class named <code class="text-[#5E48C4] font-bold">Ball</code> with properties: <code class="font-bold">texture</code>, <code class="font-bold">size</code>, and <code class="font-bold">color</code>.<br>
+                            • Instantiate two objects: <code class="font-bold">basketball</code> and <code class="font-bold">ping_pong_ball</code>.<br>
+                            • Change their attribute values and print the updated attributes.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Task 2: Dessert Class -->
+                <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
+                    <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">2. Dessert Class Scenario </h3>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            • Create a class named <code class="text-[#5E48C4] font-bold">Dessert</code> with properties: <code class="font-bold">flavor</code> and <code class="font-bold">main_ingredients</code>.<br>
+                            • Instantiate two objects: <code class="font-bold">ice_cream</code> and <code class="font-bold">waffle</code>.<br>
+                            • Customize their properties and print them out.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Task 3: Travel Plan Class -->
+                <div class="p-4 rounded-2xl border-2 border-slate-200 bg-slate-50 flex items-start gap-4">
+                    <input type="checkbox" onchange="toggleChecklist(this)" class="mt-1 w-5 h-5 accent-[#5E48C4] cursor-pointer">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-800">3. Travel Plan Scenario </h3>
+                        <p class="text-xs text-slate-600 mt-1 leading-relaxed">
+                            • Create a class named <code class="text-[#5E48C4] font-bold">TravelPlan</code> with properties: <code class="font-bold">chosen_attire</code>, <code class="font-bold">weather</code>, and <code class="font-bold">budget</code>.<br>
+                            • Instantiate two objects: <code class="font-bold">switzerland</code> and <code class="font-bold">malaysia</code>.<br>
+                            • Print both travel plan details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="checklist-status" class="text-center font-bold text-xs text-[#5E48C4] hidden bg-purple-50 p-3 rounded-xl border border-purple-200">
+                 Awesome work! You completed all checklist scenarios!
+            </div>
+        </div>
+
+        <!-- ================= SLIDE 7: WRAP-UP QUIZ ================= -->
+        <div id="slide-7" class="slide flex-col bg-white rounded-3xl p-8 shadow-xl border-2 border-purple-100 w-full max-w-4xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-xs uppercase font-extrabold tracking-widest text-[#5E48C4]">Knowledge Verification</span>
+               
+            </div>
+
+            <h2 class="text-3xl font-extrabold mb-2">
+                <span class="text-[#5E48C4]">Wrap-Up</span> <span class="text-[#E6B84A]">Quiz</span>
+            </h2>
+            <p class="text-sm text-slate-600 mb-5">Select the correct option for each question below:</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <!-- Q1 -->
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                    <p class="text-xs font-bold text-slate-800 mb-2">1. What is a Class in Python?</p>
+                    <div class="space-y-1.5">
+                        <button onclick="checkQuiz(1, true, this)" class="q1-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            A blueprint or template for creating objects
+                        </button>
+                        <button onclick="checkQuiz(1, false, this)" class="q1-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            A single variable holding numbers
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Q2 -->
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                    <p class="text-xs font-bold text-slate-800 mb-2">2. What is an Object?</p>
+                    <div class="space-y-1.5">
+                        <button onclick="checkQuiz(2, false, this)" class="q2-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            A loop that repeats code automatically
+                        </button>
+                        <button onclick="checkQuiz(2, true, this)" class="q2-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            An individual instance built from a class
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Q3 -->
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                    <p class="text-xs font-bold text-slate-800 mb-2">3. What are Properties (Attributes)?</p>
+                    <div class="space-y-1.5">
+                        <button onclick="checkQuiz(3, true, this)" class="q3-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            Features or variables that belong to a class or object
+                        </button>
+                        <button onclick="checkQuiz(3, false, this)" class="q3-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            The filename of the Python code
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Q4 -->
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50">
+                    <p class="text-xs font-bold text-slate-800 mb-2">4. How do Classes help us in programming?</p>
+                    <div class="space-y-1.5">
+                        <button onclick="checkQuiz(4, true, this)" class="q4-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            They make code organized, reusable, and easy to maintain
+                        </button>
+                        <button onclick="checkQuiz(4, false, this)" class="q4-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]">
+                            They delete all unused functions automatically
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+           
+        </div>
+
+       
+
+    </main>
+
+    <!-- ================= BOTTOM NAVIGATION FOOTER ================= -->
+    <footer class="w-full bg-white border-t border-purple-100 px-8 py-3.5 flex items-center justify-between max-w-5xl mx-auto rounded-t-3xl shadow-sm z-10">
+        <button onclick="prevSlide(); playSound('click');" id="prev-btn" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-bold px-6 py-2.5 rounded-2xl text-xs bouncy disabled:opacity-35 disabled:hover:bg-slate-100" disabled>
+            ← Previous
+        </button>
+        
+        <div class="text-xs font-bold text-slate-400">
+            Use Arrow Keys ← → to navigate
+        </div>
+
+        <button onclick="nextSlide(); playSound('click');" id="next-btn" class="purple-theme hover:bg-purple-700 text-white font-bold px-7 py-2.5 rounded-2xl text-xs bouncy shadow">
+            Next →
+        </button>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 8;
+
+        // Web Audio Synthesizer
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            if (type === 'click') {
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'correct') {
+                osc.frequency.setValueAtTime(523.25, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+            } else if (type === 'reset') {
+                osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                osc.frequency.setValueAtTime(200, audioCtx.currentTime + 0.1);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+                osc.start(); osc.stop(audioCtx.currentTime + 0.2);
+            }
+        }
+
+        function updateSlideView() {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${currentSlide}`).classList.add('active');
+            
+            document.getElementById('slide-counter').innerText = `Slide ${currentSlide} / ${totalSlides}`;
+            document.getElementById('slide-select').value = currentSlide;
+            document.getElementById('prev-btn').disabled = currentSlide === 1;
+            document.getElementById('next-btn').innerText = currentSlide === totalSlides ? 'Finish 🎉' : 'Next →';
+
+            // Top Dots Render
+            const dotsContainer = document.getElementById('top-dots');
+            dotsContainer.innerHTML = '';
+            for (let i = 1; i <= totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = `h-2 rounded-full transition-all ${i === currentSlide ? 'w-6 bg-[#5E48C4]' : 'w-2 bg-purple-200'}`;
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function jumpToSlide(num) {
+            currentSlide = parseInt(num);
+            updateSlideView();
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlideView();
+            } else {
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlideView();
+            }
+        }
+
+        // Keyboard Arrow Key Navigation
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Slide 3 Teacher Option Selection
+        function selectTeacherOpt(opt) {
+            playSound('click');
+            const btnA = document.getElementById('t-opt-a');
+            const btnB = document.getElementById('t-opt-b');
+            const fb = document.getElementById('teacher-feedback');
+
+            if (opt === 'b') {
+                btnB.className = "p-6 rounded-2xl border-2 border-[#5E48C4] bg-purple-50 text-left bouncy transition-all flex flex-col items-center text-center shadow-md";
+                btnA.className = "p-6 rounded-2xl border-2 border-slate-200 bg-white text-left bouncy transition-all flex flex-col items-center text-center";
+                fb.innerHTML = `<p class="font-bold text-[#5E48C4] text-base mb-1">✅ Option B is Object-Oriented Programming!</p><p class="text-xs text-slate-700">Instead of repeating instructions for every object, we program features once inside the Class. All objects automatically share those capabilities!</p>`;
+            } else {
+                btnA.className = "p-6 rounded-2xl border-2 border-[#5E48C4] bg-purple-50 text-left bouncy transition-all flex flex-col items-center text-center shadow-md";
+                btnB.className = "p-6 rounded-2xl border-2 border-slate-200 bg-white text-left bouncy transition-all flex flex-col items-center text-center";
+                fb.innerHTML = `<p class="font-bold text-rose-600 text-base mb-1">⚠ Option A creates redundant work!</p><p class="text-xs text-slate-700">Repeating code for 30 individual students is slow. Option B programs the class blueprint together at once!</p>`;
+            }
+        }
+
+        // ================= SLIDE 5 BUILDER STATE & RESET LOGIC =================
+        let bState = {
+            classCreated: true,
+            hasSubject: false,
+            hasRoom: false,
+            hasTeacher: false,
+            hasS1: false,
+            hasS2: false,
+            changeS1: false,
+            printS1: false,
+            printS2: false
+        };
+
+        function toggleBuilderStep(step) {
+            playSound('click');
+            if (step === 'class') bState.classCreated = !bState.classCreated;
+            if (step === 'attr_sub') bState.hasSubject = !bState.hasSubject;
+            if (step === 'attr_room') bState.hasRoom = !bState.hasRoom;
+            if (step === 'attr_teacher') bState.hasTeacher = !bState.hasTeacher;
+            if (step === 'obj_s1') bState.hasS1 = !bState.hasS1;
+            if (step === 'obj_s2') bState.hasS2 = !bState.hasS2;
+            if (step === 'change_s1') bState.changeS1 = !bState.changeS1;
+            if (step === 'print_s1') bState.printS1 = !bState.printS1;
+            if (step === 'print_s2') bState.printS2 = !bState.printS2;
+
+            updateBuilderUI();
+            updateBuilderCode();
+        }
+
+        function updateBuilderUI() {
+            // Update button styles based on active boolean state
+            document.getElementById('btn-step-class').className = bState.classCreated ? "w-full text-left p-2 rounded-xl border-2 border-[#5E48C4] bg-purple-50 text-xs font-bold text-[#5E48C4] bouncy flex items-center justify-between" : "w-full text-left p-2 rounded-xl border-2 border-slate-200 bg-white text-xs font-bold text-slate-600 bouncy flex items-center justify-between";
+            document.getElementById('btn-attr-sub').className = bState.hasSubject ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-lg bouncy" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy";
+            document.getElementById('btn-attr-room').className = bState.hasRoom ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-lg bouncy" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy";
+            document.getElementById('btn-attr-teacher').className = bState.hasTeacher ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-lg bouncy" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-lg bouncy";
+            document.getElementById('btn-obj-s1').className = bState.hasS1 ? "yellow-bg text-slate-900 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center" : "bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center";
+            document.getElementById('btn-obj-s2').className = bState.hasS2 ? "yellow-bg text-slate-900 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center" : "bg-slate-200 text-slate-700 text-[11px] font-extrabold p-2 rounded-xl bouncy text-center";
+            document.getElementById('btn-change-s1').className = bState.changeS1 ? "purple-theme text-white text-[11px] font-bold p-2 rounded-xl bouncy text-left flex items-center justify-between" : "bg-slate-200 text-slate-700 text-[11px] font-bold p-2 rounded-xl bouncy text-left flex items-center justify-between";
+            document.getElementById('btn-print-s1').className = bState.printS1 ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-xl bouncy text-center" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-xl bouncy text-center";
+            document.getElementById('btn-print-s2').className = bState.printS2 ? "purple-theme text-white text-[10px] font-bold p-1.5 rounded-xl bouncy text-center" : "bg-slate-200 text-slate-700 text-[10px] font-bold p-1.5 rounded-xl bouncy text-center";
+        }
+
+        function updateBuilderCode() {
+            document.getElementById('builder-terminal-view').classList.add('hidden');
+
+            let code = "";
+            if (bState.classCreated) {
+                code += `<span style="color: #ed5661;">class</span> <span style="color: #ffd071;">Classroom</span>:\n`;
+                if (bState.hasSubject) code += `    subject = <span style="color: #59e4fb;">"Maths"</span>\n`;
+                if (bState.hasRoom) code += `    room_number = <span style="color: #ffd071;">101</span>\n`;
+                if (bState.hasTeacher) code += `    teacher_name = <span style="color: #59e4fb;">"Mr. Davis"</span>\n`;
+                if (!bState.hasSubject && !bState.hasRoom && !bState.hasTeacher) {
+                    code += `    <span style="color: #888896;">pass  # Click buttons to add properties</span>\n`;
+                }
+            }
+
+            if (bState.hasS1) {
+                code += `\n<span style="color: #888896;"># Instantiate student1 object</span>\nstudent1 = Classroom()\n`;
+            }
+
+            if (bState.hasS2) {
+                code += `\n<span style="color: #888896;"># Instantiate student2 object</span>\nstudent2 = Classroom()\n`;
+            }
+
+            if (bState.changeS1) {
+                code += `\n<span style="color: #888896;"># Override student1 attribute value</span>\nstudent1.subject = <span style="color: #59e4fb;">"Physics"</span>\n`;
+            }
+
+            if (bState.printS1) {
+                code += `\nprint(<span style="color: #59e4fb;">"Student 1 Subject:"</span>, student1.subject)\n`;
+            }
+
+            if (bState.printS2) {
+                code += `print(<span style="color: #59e4fb;">"Student 2 Subject:"</span>, student2.subject)\n`;
+            }
+
+            if (!code) {
+                code = `<span style="color: #888896;"># Click '1. Create Class Classroom' on the left to start!</span>`;
+            }
+
+            document.getElementById('builder-editor-view').innerHTML = code;
+        }
+
+        function resetBuilderSimulation() {
+            playSound('reset');
+            bState = {
+                classCreated: false,
+                hasSubject: false,
+                hasRoom: false,
+                hasTeacher: false,
+                hasS1: false,
+                hasS2: false,
+                changeS1: false,
+                printS1: false,
+                printS2: false
+            };
+            updateBuilderUI();
+            updateBuilderCode();
+            document.getElementById('builder-terminal-view').classList.add('hidden');
+        }
+
+        function runBuilderSimulation() {
+            playSound('correct');
+            updateBuilderCode();
+            const term = document.getElementById('builder-terminal-view');
+            term.classList.remove('hidden');
+
+            let output = `<span class="text-slate-400">>>> RUNNING SIMULATION...</span>\n`;
+            
+            if (!bState.classCreated) {
+                output += `<span class="text-rose-400">⚠️ Error: Class 'Classroom' is not defined yet!</span>`;
+            } else if (!bState.printS1 && !bState.printS2) {
+                output += `<span class="text-amber-300">ℹ️ Code executed successfully! Add print() statements to view output here.</span>`;
+            } else {
+                if (bState.printS1) {
+                    if (!bState.hasS1) {
+                        output += `<span class="text-rose-400">NameError: name 'student1' is not defined</span>\n`;
+                    } else {
+                        const s1Val = bState.changeS1 ? "Physics" : (bState.hasSubject ? "Maths" : "undefined");
+                        output += `Student 1 Subject: ${s1Val}\n`;
+                    }
+                }
+
+                if (bState.printS2) {
+                    if (!bState.hasS2) {
+                        output += `<span class="text-rose-400">NameError: name 'student2' is not defined</span>\n`;
+                    } else {
+                        const s2Val = bState.hasSubject ? "Maths" : "undefined";
+                        output += `Student 2 Subject: ${s2Val}\n`;
+                    }
+                }
+            }
+
+            term.innerHTML = output;
+        }
+
+        // Slide 6 Checklist Logic
+        let checkedCount = 0;
+        function toggleChecklist(cb) {
+            playSound('click');
+            checkedCount += cb.checked ? 1 : -1;
+            const status = document.getElementById('checklist-status');
+            if (checkedCount === 3) {
+                status.classList.remove('hidden');
+                confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+            } else {
+                status.classList.add('hidden');
+            }
+        }
+
+        // Slide 7 Quiz Logic
+        let quizAnswers = { 1: false, 2: false, 3: false, 4: false };
+        function checkQuiz(qNum, isCorrect, btn) {
+            playSound(isCorrect ? 'correct' : 'click');
+            document.querySelectorAll(`.q${qNum}-btn`).forEach(b => {
+                b.className = "q" + qNum + "-btn w-full p-2.5 text-xs text-left font-medium rounded-xl border border-slate-300 bg-white hover:border-[#5E48C4]";
+            });
+
+            if (isCorrect) {
+                btn.className = "q" + qNum + "-btn w-full p-2.5 text-xs text-left font-bold rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900";
+                quizAnswers[qNum] = true;
+            } else {
+                btn.className = "q" + qNum + "-btn w-full p-2.5 text-xs text-left font-bold rounded-xl border-2 border-rose-500 bg-rose-50 text-rose-900";
+                quizAnswers[qNum] = false;
+            }
+
+            const status = document.getElementById('quiz-status');
+            status.classList.remove('hidden');
+            const total = Object.values(quizAnswers).filter(Boolean).length;
+            status.innerText = `Correct Answers: ${total} / 4`;
+            
+            if (total === 4) {
+                status.innerText = "🎉 Perfect Score! All 4 answers correct!";
+                confetti({ particleCount: 80, spread: 70, origin: { y: 0.6 } });
+            }
+        }
+
+        // Initialize First View & Default Code Build
+        updateSlideView();
+        updateBuilderUI();
+        updateBuilderCode();
+    </script>
+</body>
+</html>
